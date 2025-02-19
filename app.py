@@ -11,14 +11,31 @@ def create_map():
     # Add legend
     legend_html = '''
         <div style="position: fixed; 
-                    bottom: 50px; right: 50px; width: 200px; height: 120px; 
-                    border:2px solid grey; z-index:9999; background-color:white;
-                    padding: 10px;
+                    bottom: 50px; right: 50px; width: 280px; 
+                    border:2px solid grey; z-index:9999; 
+                    background-color:white;
+                    padding: 15px;
+                    border-radius: 6px;
+                    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
                     font-size: 14px;">
-            <p><strong>Study Distribution</strong></p>
-            <p> Large circle: >30% studies</p>
-            <p> Medium circle: 10-30% studies</p>
-            <p> Small circle: <10% studies</p>
+            <h4 style="margin-top:0; color:#333; border-bottom:1px solid #ccc; padding-bottom:5px;">Study Distribution</h4>
+            <div style="margin: 10px 0;">
+                <div style="display:flex; align-items:center; margin-bottom:8px;">
+                    <div style="width:20px; height:20px; border-radius:50%; background-color:red; margin-right:10px;"></div>
+                    <span>Large circle (>30%)<br><small style="color:#666">e.g., Asia (42.8%)</small></span>
+                </div>
+                <div style="display:flex; align-items:center; margin-bottom:8px;">
+                    <div style="width:15px; height:15px; border-radius:50%; background-color:blue; margin-right:10px;"></div>
+                    <span>Medium circle (10-30%)<br><small style="color:#666">e.g., Africa (22.1%)</small></span>
+                </div>
+                <div style="display:flex; align-items:center;">
+                    <div style="width:10px; height:10px; border-radius:50%; background-color:lightgray; margin-right:10px;"></div>
+                    <span>Small circle (<10%)<br><small style="color:#666">e.g., Europe (6.5%)</small></span>
+                </div>
+            </div>
+            <div style="font-size:12px; color:#666; margin-top:10px; border-top:1px solid #ccc; padding-top:5px;">
+                Click on any circle for detailed information
+            </div>
         </div>
         '''
     m.get_root().html.add_child(folium.Element(legend_html))
