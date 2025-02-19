@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask
 import folium
 from folium import plugins
 
@@ -16,12 +16,15 @@ def create_map():
                     padding: 10px;
                     font-size: 14px;">
             <p><strong>Study Distribution</strong></p>
-            <p>🔴 Large circle: >30% studies</p>
-            <p>🔵 Medium circle: 10-30% studies</p>
-            <p>⚪ Small circle: <10% studies</p>
+            <p> Large circle: >30% studies</p>
+            <p> Medium circle: 10-30% studies</p>
+            <p> Small circle: <10% studies</p>
         </div>
         '''
     m.get_root().html.add_child(folium.Element(legend_html))
+    
+    # Create a feature group for all markers
+    feature_group = folium.FeatureGroup(name="Regions")
     
     # Global data with extended information
     global_data = {
@@ -94,23 +97,27 @@ def create_map():
         </div>
         """
         
-        # Add circle with popup
+        # Add circle with popup to feature group
         folium.Circle(
             location=[data['lat'], data['lon']],
             radius=radius,
             popup=folium.Popup(popup_content, max_width=300),
             color=color,
             fill=True,
-            fill_color=color
-        ).add_to(m)
+            fill_color=color,
+            search_text=region
+        ).add_to(feature_group)
 
-    # Add search functionality
+    # Add the feature group to the map
+    feature_group.add_to(m)
+
+    # Add search functionality to the feature group
     m.add_child(plugins.Search(
-        layer=None,
+        layer=feature_group,
         geom_type='Point',
         placeholder='Search regions...',
         collapsed=False,
-        search_label='name'
+        search_label='search_text'
     ))
     
     return m
